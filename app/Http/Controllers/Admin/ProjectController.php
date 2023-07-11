@@ -6,11 +6,14 @@ use App\Models\Project;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Technology;
 
 class ProjectController extends Controller
 {
     public $validation = ([
         'title'         => 'required',
+        'technology_id' => 'required|exists:technologies,id',
+        'type_id'       => 'required|exists:types,id',
         'url_image'     => 'required',
         'content'       => 'required',
     ]);
@@ -35,7 +38,8 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('admin.projects.create', compact('types'));
+        $technologies = Technology::all();
+        return view('admin.projects.create', compact('types','technologies'));
     }
 
     /**
@@ -50,12 +54,16 @@ class ProjectController extends Controller
 
         $data = $request->all();
 
-        $newproject = new Project();
-        $newproject->title = $data['title'];
-        $newproject->type_id = $data['type_id'];
-        $newproject->url_image = $data['url_image'];
-        $newproject->content = $data['content'];
+        $newproject                 = new Project();
+        $newproject->title          = $data['title'];
+        $newproject->type_id        = $data['type_id'];
+        $newproject->technology_id  = $data['technology_id'];
+        $newproject->url_image      = $data['url_image'];
+        $newproject->content        = $data['content'];
         $newproject->save();
+
+        //prima salvo post, poi associo i dati
+        $newproject->technologies()->sync($data['technologies'] ?? []);
 
         return to_route('admin.projects.show', ['project' => $newproject]);
     }
@@ -80,7 +88,8 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
-        return view('admin.projects.edit', compact('project', 'types'));
+        $technologies = Technology::all();
+        return view('admin.projects.edit', compact('project', 'types','technologies'));
     }
 
     /**
@@ -96,10 +105,13 @@ class ProjectController extends Controller
 
         $data = $request->all();
         
-        $project->title = $data['title'];
-        $project->url_image = $data['url_image'];
-        $project->content = $data['content'];
+        $project->title         = $data['title'];
+        $project->url_image     = $data['url_image'];
+        $project->content       = $data['content'];
+        $project->type_id       = $data['type_id'];
         $project->update();
+
+        $project->technologies()->sync($data['technologies'] ?? []);
 
         return to_route('admin.projects.show', ['project' => $project]);
     }
@@ -112,6 +124,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        $project->technologies()->detach();
+
         $project->delete();
 
         return redirect()->route('admin.projects.index')->with('delete_success', $project);

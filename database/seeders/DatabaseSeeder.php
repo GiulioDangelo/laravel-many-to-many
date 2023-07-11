@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Type;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,8 +23,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UsersTableSeeder::class,
-            TypeTableSeeder::class,
-            ProjectTableSeeder::class,
+            TypesTableSeeder::class,
+            TechnologiesTableSeeder::class,
+            ProjectsTableSeeder::class,
         ]);
     }
 }

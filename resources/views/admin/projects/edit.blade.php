@@ -85,6 +85,34 @@
             @enderror
         </div>
 
+
+        <div class="mb-3">
+            <h6>technologies</h6>
+            @foreach ($technologies as $technology)
+            <div class="form-check">
+                <input 
+                    class="form-check-input" 
+                    type="checkbox" 
+                    id="technology{{ $technology->id }}" 
+                    value="{{ $technology->id }}"
+                    name="technologies[]"
+                    @if (in_array($technology->id, old('technologies', $project->technologies->pluck('id')->all()))) checked @endif 
+                >
+                <label class="form-check-label" for="tag{{ $technology->id }}">
+               {{ $technology->name }}
+                </label>
+            </div>
+            @endforeach
+        </div> 
+
+            {{-- @dump($errors->get('technologies.*')) --}}
+            {{-- @error('technologies')
+                <div class="">
+                    {{ $message }}
+                </div>
+            @enderror --}}
+        </div>
+
         <button class="btn btn-primary">Update</button>
     </form>
 

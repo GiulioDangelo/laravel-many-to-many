@@ -33,7 +33,8 @@ class TechnologiesTableSeeder extends Seeder
             ],
         ];
         
-        foreach ($technologies as $technology) {
+        
+        foreach (config($technologies) as $technology) {
             Technology::create($technology);
         }
     }
