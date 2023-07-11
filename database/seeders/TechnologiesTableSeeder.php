@@ -23,10 +23,10 @@ class TechnologiesTableSeeder extends Seeder
                 'name' => 'Laravel',
             ],
             [
-                'name' => 'JavaScript',
+                'name' => 'javaScript',
             ],
             [
-                'name' => 'HTML',
+                'name' => 'html',
             ],
             [
                 'name' => 'CSS',
@@ -34,7 +34,7 @@ class TechnologiesTableSeeder extends Seeder
         ];
         
         
-        foreach (config($technologies) as $technology) {
+        foreach ($technologies as $technology) {
             Technology::create($technology);
         }
     }
