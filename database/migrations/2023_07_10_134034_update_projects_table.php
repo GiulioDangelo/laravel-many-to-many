@@ -31,7 +31,7 @@ return new class extends Migration
     {
         Schema::table('project', function (Blueprint $table) {
             // eliminare la chiave esterna
-            $table->dropForeign('projects_types_id_foreign');
+            $table->dropForeign('projects_type_id_foreign');
 
             // eliminiamo  la colonna 
             $table->dropColumn('type_id');

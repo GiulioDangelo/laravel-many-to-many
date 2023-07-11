@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Technology;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,26 @@ class TechnologiesTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $technologies = [
+            [
+                'name' => 'PHP',
+            ],
+            [
+                'name' => 'Laravel',
+            ],
+            [
+                'name' => 'JavaScript',
+            ],
+            [
+                'name' => 'HTML',
+            ],
+            [
+                'name' => 'CSS',
+            ],
+        ];
+        
+        foreach ($technologies as $technology) {
+            Technology::create($technology);
+        }
     }
 }
