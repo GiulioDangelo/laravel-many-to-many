@@ -6,6 +6,6 @@
     <img src="{{ $project->url_image }}" alt="{{ $project->title }}">
     <p>{{ $project->content }}</p>
     <h3>Technologies: {{ implode(',', $project->technologies->pluck('name')->all()) }}</h3>
-    {{-- <p>{{ $project->type->name }}</p> --}}
+    <p>{{ $project->type->name }}</p>
 
 @endsection

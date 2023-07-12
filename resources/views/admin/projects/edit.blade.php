@@ -4,7 +4,7 @@
 
     <h1>Edit project</h1>
 
-    {{-- @if ($errors->any())
+    @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -12,7 +12,7 @@
                 @endforeach
             </ul>
         </div>
-    @endif --}}
+    @endif
 
     <form method="POST" action="{{ route('admin.projects.update', ['project' => $project]) }}" novalidate>
         @csrf
@@ -91,27 +91,26 @@
             @foreach ($technologies as $technology)
             <div class="form-check">
                 <input 
-                    class="form-check-input" 
-                    type="checkbox" 
+                type="checkbox" 
+                class="form-check-input" 
                     id="technology{{ $technology->id }}" 
-                    value="{{ $technology->id }}"
                     name="technologies[]"
+                    value="{{ $technology->id }}"
                     @if (in_array($technology->id, old('technologies', $project->technologies->pluck('id')->all()))) checked @endif 
                 >
-                <label class="form-check-label" for="tag{{ $technology->id }}">
+                <label class="form-check-label" for="technology{{ $technology->id }}">
                {{ $technology->name }}
                 </label>
             </div>
             @endforeach
         </div> 
 
-            {{-- @dump($errors->get('technologies.*')) --}}
-            {{-- @error('technologies')
+            {{-- @dump($errors->get('technologies.*'))
+            @error('technologies')
                 <div class="">
                     {{ $message }}
                 </div>
             @enderror --}}
-        </div>
 
         <button class="btn btn-primary">Update</button>
     </form>

@@ -3,9 +3,10 @@
 use App\Models\Technology;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\TechnologyController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Guests\PageController as GuestsPageController;
 

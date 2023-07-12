@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Type;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class TypeController extends Controller
 {
@@ -45,9 +46,9 @@ class TypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Type $type)
     {
-        //
+        return view('admin.types.show',compact('type'));
     }
 
     /**

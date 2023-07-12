@@ -12,11 +12,11 @@ use App\Http\Controllers\Controller;
 class ProjectController extends Controller
 {
     public $validation = ([
-        'title'         => 'required',
-        'technology_id' => 'required|exists:technologies,id',
-        'type_id'       => 'required|exists:types,id',
-        'url_image'     => 'required',
-        'content'       => 'required',
+        'title'             => 'required',
+        'technology_id'     => 'required|exists:technologies,id',
+        'type_id'           => 'required|exists:types,id',
+        'url_image'         => 'required',
+        'content'           => 'required',
     ]);
 
     /**

@@ -34,14 +34,17 @@
         </div>
 
         <div class="mb-3">
-            <label for="type" class="form-label">type</label>
+            <label for="category" class="form-label">type</label>
             <select
                 class="form-select @error('type_id') is-invalid @enderror"
                 id="type"
                 name="type_id"
             >
                 @foreach ($types as $type)
-                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                    <option
+                        value="{{ $type->id }}"
+                        @if (old('type_id', $project->type) == $type->id) selected @endif
+                    >{{ $type->name }}</option>
                 @endforeach
             </select>
             @error('type_id')
@@ -68,28 +71,23 @@
         </div>
 
         <div class="mb-3">
-            <h3>Technologies</h3>
-            @foreach($technologies as $technology)
-                <div class="mb-3 form-check">
-                    <input
-                        type="checkbox"
-                        class="form-check-input"
-                        id="technology{{ $technology->id }}"
-                        name="technologies[]"
-                        value="{{ $technology->id }}"
-                        @if (in_array($technology->id, old('technologies', []))) checked @endif
-                    >
-                    <label class="form-check-label" for="technology{{ $technology->id }}">{{ $technology->name }}</label>
-                </div>
+            <h6>technologies</h6>
+            @foreach ($technologies as $technology)
+            <div class="form-check">
+                <input 
+                type="checkbox" 
+                class="form-check-input" 
+                    id="technology{{ $technology->id }}" 
+                    name="technologies[]"
+                    value="{{ $technology->id }}"
+                    @if (in_array($technology->id, old('technologies', $project->technologies->pluck('id')->all()))) checked @endif 
+                >
+                <label class="form-check-label" for="technology{{ $technology->id }}">
+               {{ $technology->name }}
+                </label>
+            </div>
             @endforeach
-
-            {{-- @dump($errors->get('technologies.*')) --}}
-            {{-- @error('technologies')
-                <div class="">
-                    {{ $message }}
-                </div>
-            @enderror --}}
-        </div>
+        </div> 
 
         <div class="mb-3">
             <label for="content" class="form-label">Content</label>
