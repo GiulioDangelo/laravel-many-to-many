@@ -86,6 +86,6 @@ class TechnologyController extends Controller
         
         $technology->delete();
 
-        return to_route('technologies.index')->with('success', 'Technology deleted successfully');
+        return to_route('admin.technologies.index')->with('success', 'Technology deleted successfully');
     }
 }
