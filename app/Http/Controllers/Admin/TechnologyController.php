@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Type;
+use App\Models\Technology;
 use Illuminate\Http\Request;
 
-class TypeController extends Controller
+class TechnologyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class TypeController extends Controller
      */
     public function index()
     {
-        $types = Type::all();
-        return view('admin.types.index',compact('types'));
+        $technologies = Technology::all();
+        return view('admin.technologies.index', compact('technologies'));
     }
 
     /**
@@ -79,15 +79,12 @@ class TypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Type $type)
+    public function destroy(Technology $technology)
     {
-        foreach ($type->projects as $project) {
-            $project->type_id = 1;
-            $project->update();
-        };
+        $technology->projects()->detach();
+        
+        $technology->delete();
 
-        $type->delete();
-
-        return to_route('admin.types.index')->with('success', 'Type deleted!');
+        return to_route('technologies.index')->with('success', 'Technology deleted successfully');
     }
 }

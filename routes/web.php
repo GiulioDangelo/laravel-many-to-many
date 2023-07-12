@@ -1,8 +1,10 @@
 <?php
 
+use App\Models\Technology;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Guests\PageController as GuestsPageController;
@@ -27,6 +29,7 @@ Route::middleware('auth','verified')
     Route::get('/', [AdminPageController::class, 'dashboard'])->name('dashboard');
     Route::resource('projects', ProjectController::class);
     Route::resource('types', TypeController::class);
+    Route::resource('technologies', TechnologyController::class);
 });
 
 

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Project;
 use App\Models\Type;
+use App\Models\Project;
+use App\Models\Technology;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Technology;
 
 class ProjectController extends Controller
 {
@@ -56,6 +57,7 @@ class ProjectController extends Controller
 
         $newproject                 = new Project();
         $newproject->title          = $data['title'];
+        $newproject->slug           = Str::slug($data['title']);
         $newproject->type_id        = $data['type_id'];
         $newproject->technology_id  = $data['technology_id'];
         $newproject->url_image      = $data['url_image'];
@@ -74,8 +76,9 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show($slug)
     {
+        $project = Project::where('slug', $slug)->firstOrFail();
         return view('admin.projects.show', compact('project'));
     }
 
@@ -85,8 +88,9 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project)
+    public function edit($slug)
     {
+        $project = Project::where('slug', $slug)->firstOrFail();
         $types = Type::all();
         $technologies = Technology::all();
         return view('admin.projects.edit', compact('project', 'types','technologies'));
@@ -99,8 +103,9 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, $slug)
     {
+        $project = Project::where('slug', $slug)->firstOrFail();
         $request->validate($this->validation);
 
         $data = $request->all();
@@ -122,8 +127,10 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy($slug)
     {
+        $project = Project::where('slug', $slug)->firstOrFail();
+
         $project->technologies()->detach();
 
         $project->delete();
