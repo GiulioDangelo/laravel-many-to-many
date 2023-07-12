@@ -22,7 +22,7 @@ class ProjectsTableSeeder extends Seeder
     {
         $types = Type::all()->pluck('id');
         // $types = shift();
-        $technologies = Technology::all()->pluck('name');
+        $technologies = Technology::all()->pluck('id');
 
         for ($i = 0; $i < 50; $i++) {
             $title = $faker->words(rand(2,10),true);
