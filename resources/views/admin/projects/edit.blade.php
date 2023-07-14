@@ -14,7 +14,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('admin.projects.update', ['project' => $project]) }}" novalidate>
+    <form method="POST" action="{{ route('admin.projects.update', ['project' => $project]) }}" enctype="multipart/form-data" novalidate>
         @csrf
         @method('put')
 
@@ -44,6 +44,16 @@
                 value="{{ old('url_image', $project->url_image) }}"
             >
             @error('url_image')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+
+        <div class="input-group mb-3">
+            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+            <label class="input-group-text  @error('image') is-invalid @enderror" for="image">Upload</label>
+            @error('image')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>

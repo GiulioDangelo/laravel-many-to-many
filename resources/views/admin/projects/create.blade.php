@@ -14,7 +14,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('admin.projects.store') }}" novalidate>
+    <form method="POST" action="{{ route('admin.projects.store') }}" enctype="multipart/form-data" novalidate>
         @csrf
 
         <div class="mb-3">
@@ -34,7 +34,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="category" class="form-label">type</label>
+            <label for="type" class="form-label">type</label>
             <select
                 class="form-select @error('type_id') is-invalid @enderror"
                 id="type"
@@ -43,11 +43,20 @@
                 @foreach ($types as $type)
                     <option
                         value="{{ $type->id }}"
-                        @if (old('type_id', $project->type) == $type->id) selected @endif
                     >{{ $type->name }}</option>
                 @endforeach
             </select>
             @error('type_id')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+
+        <div class="input-group mb-3">
+            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+            <label class="input-group-text  @error('image') is-invalid @enderror" for="image">Upload</label>
+            @error('image')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
@@ -80,7 +89,7 @@
                     id="technology{{ $technology->id }}" 
                     name="technologies[]"
                     value="{{ $technology->id }}"
-                    @if (in_array($technology->id, old('technologies', $project->technologies->pluck('id')->all()))) checked @endif 
+                    @if (in_array($technology->id, old('technologies', $technologies->pluck('id')->all()))) checked @endif 
                 >
                 <label class="form-check-label" for="technology{{ $technology->id }}">
                {{ $technology->name }}

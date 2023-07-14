@@ -8,6 +8,7 @@ use App\Models\Technology;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -15,7 +16,8 @@ class ProjectController extends Controller
         'title'             => 'required',
         'technology_id'     => 'exists:technologies,id',
         'type_id'           => 'required|exists:types,id',
-        'url_image'         => 'required',
+        'url_image'         => 'nullable',
+        'image'             => 'nullable',
         'content'           => 'required',
     ]);
 
@@ -51,9 +53,16 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $request->all();
+
+        // salvare l'immagine nella cartella degli uploads
+        // prendere il percorso dell'immagine appena salvata
+        $imagePath = Storage::put('uploads', $data['image']);
+        // dd($imagePath);
+
+
         $request->validate($this->validation);
 
-        $data = $request->all();
 
         $newproject                 = new Project();
         $newproject->title          = $data['title'];
@@ -61,6 +70,7 @@ class ProjectController extends Controller
         $newproject->type_id        = $data['type_id'];
         $newproject->technology_id  = $data['technology_id'];
         $newproject->url_image      = $data['url_image'];
+        $newproject->image          = $imagePath;
         $newproject->content        = $data['content'];
         $newproject->save();
 
@@ -109,6 +119,18 @@ class ProjectController extends Controller
         $request->validate($this->validation);
 
         $data = $request->all();
+
+        if ($data['image']) {
+            // salvare l'immagine nuova
+            $imagePath = Storage::put('uploads', $data['image']);
+
+            // eliminare l'immagine vecchia
+            if ($project->image) {
+                Storage::delete($project->image);
+            }
+            // aggiormare il valore nella colonna con l'indirizzo dell'immagine nuova
+            $project->image = $imagePath;
+        }
         
         $project->title         = $data['title'];
         $project->url_image     = $data['url_image'];
@@ -130,6 +152,10 @@ class ProjectController extends Controller
     public function destroy($slug)
     {
         $project = Project::where('slug', $slug)->firstOrFail();
+
+        if ($project->image) {
+            Storage::delete($project->image);
+        }
 
         $project->technologies()->detach();
 
